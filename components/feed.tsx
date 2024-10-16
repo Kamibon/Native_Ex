@@ -5,7 +5,7 @@ import { Tile } from '@rneui/themed'
 import { Overlay } from '@rneui/base'
 
 
- function Details({ uri, description }: { uri: string, description: string }) {
+ export function Details({ uri, description }: { uri: string, description: string }) {
      return (
          <Tile
              overlayContainerStyle={{ backgroundColor: 'blue', width: '60%' }}
@@ -27,12 +27,15 @@ const [showDetails, setShownDetails] = useState({ isShown: false, uri:'', descri
   return (
     <View>
     
-    <FlatList data={posts} initialNumToRender={15} numColumns={3}  renderItem={({item})=><Tile  key={item.id}  
+    <FlatList key={2}  data={posts} initialNumToRender={15} numColumns={2}  renderItem={({item})=>  
+    <View key={item.id} className='   w-[50%]'>
+      <Tile contentContainerStyle = {{ height:0}}    
      onPress={()=>{  setShownDetails({isShown:true,
         uri:item.images[0], 
    description:item.description})}}  imageSrc={{uri:item.images[0]} }>
 
-   </Tile> }>
+   </Tile> 
+   </View>}>
      </FlatList>
 
       <Overlay onPressOut={()=>{ setShownDetails({...showDetails, isShown:false})}} 
@@ -45,3 +48,4 @@ const [showDetails, setShownDetails] = useState({ isShown: false, uri:'', descri
     </View>
   )
 }
+

@@ -11,7 +11,7 @@ export default function PostPanel() {
      
 
      const posts = useAppSelector(state=>state.fakeGram.posts)
-    console.log(posts)
+    
   return (
    
        <ScrollView  contentContainerStyle = {{ alignItems:'center', gap:10}}>
