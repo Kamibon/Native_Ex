@@ -27,7 +27,7 @@ const [showDetails, setShownDetails] = useState({ isShown: false, uri:'', descri
   return (
     <View>
     
-    <FlatList key={2}  data={posts} initialNumToRender={15} numColumns={2}  renderItem={({item})=>  
+    <FlatList className=' mb-32' key={2}  data={posts} initialNumToRender={15} numColumns={2}  renderItem={({item})=>  
     <View key={item.id} className='   w-[50%]'>
       <Tile contentContainerStyle = {{ height:0}}    
      onPress={()=>{  setShownDetails({isShown:true,

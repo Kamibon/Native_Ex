@@ -4,17 +4,19 @@ import AntDesign from '@expo/vector-icons/AntDesign';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 
 export default function TabLayout() {
+
+  
   return (
-    <Tabs initialRouteName='index' screenOptions={{ tabBarActiveTintColor: 'black' }}>
+    <Tabs initialRouteName='index' screenOptions={{ tabBarShowLabel:false, tabBarActiveBackgroundColor:'#C5C6D0'}}>
       <Tabs.Screen
         name="index"
         options={{
           headerShown:false,
-            
           title: 'Homepage',
-          tabBarIcon:()=> <Feather name="home" size={24} color="black" />
+          tabBarIcon:()=> <Feather name="home" size={24}  />
           
         }}
+        
         
       />
       <Tabs.Screen
@@ -23,7 +25,7 @@ export default function TabLayout() {
         options={{
           headerShown:false,
           title: 'Search',
-          tabBarIcon:()=><AntDesign name="search1" size={24} color="black" />
+          tabBarIcon:()=><AntDesign name="search1" size={24} />
         }}
       />
        <Tabs.Screen
@@ -32,7 +34,7 @@ export default function TabLayout() {
         options={{
           headerShown:false,
           title: 'Aggiungi post',
-          tabBarIcon:()=><AntDesign name="plus" size={24} color="black" />
+          tabBarIcon:()=><AntDesign name="plus" size={24}  />
         }}
       />
       <Tabs.Screen
@@ -41,7 +43,7 @@ export default function TabLayout() {
         options={{
           headerShown:false,
           title: 'Your account',
-          tabBarIcon:()=><MaterialCommunityIcons name="account" size={24} color="black" />
+          tabBarIcon:()=><MaterialCommunityIcons name="account" size={24}  />
         }}
       />
     

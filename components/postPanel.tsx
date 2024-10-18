@@ -14,7 +14,7 @@ export default function PostPanel() {
     
   return (
    
-       <ScrollView  contentContainerStyle = {{ alignItems:'center', gap:10}}>
+       <ScrollView className=' mb-28'  contentContainerStyle = {{ alignItems:'center', gap:10}}>
           {posts?.map(item=> 
           <Post key={item.id} item = {item}></Post>
         )}

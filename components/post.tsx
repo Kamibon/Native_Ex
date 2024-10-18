@@ -1,8 +1,17 @@
 import { View, Text } from 'react-native'
-import React from 'react'
-import { ButtonGroup, Card } from '@rneui/themed'
+import React, { useState } from 'react'
+import { Button, ButtonGroup, Card } from '@rneui/themed'
+import { PostDto } from '@/app/service/slice'
+import Feather from '@expo/vector-icons/Feather'
+import AntDesign from '@expo/vector-icons/AntDesign'
+import FontAwesone from '@expo/vector-icons/FontAwesome'
 
-export default function Post({item}) {
+
+
+export default function Post({item} : {item:PostDto}) {
+
+  const [liked, setLiked] = useState(false)
+
   return (
     <Card key={item.id} containerStyle = {{ width:'65%'}} wrapperStyle = {{ padding:'2%'}} >
     <Card.Title>
@@ -15,9 +24,13 @@ export default function Post({item}) {
     <Card.FeaturedSubtitle className=' overflow-clip text-black font-light'>{item.description}</Card.FeaturedSubtitle>
     <Card.Divider>
     </Card.Divider>
-    <ButtonGroup textStyle = {{ fontSize:10}} buttons={['Like', 'Commenta', 'Share']}>
+    {/* <ButtonGroup  textStyle = {{ fontSize:10}} buttons={['Like', 'Commenta', 'Share']}>
        
-    </ButtonGroup>
+    </ButtonGroup> */}
+    <View className=' flex flex-row justify-start '>
+     <Button onPress={()=>setLiked(prev=>!prev)} buttonStyle = {{ backgroundColor: 'transparent'}}  icon = {liked? <AntDesign color={'red'} name='heart'></AntDesign>: <AntDesign  name='hearto'></AntDesign>}></Button>
+     <Button buttonStyle = {{ backgroundColor: 'transparent'}}  icon = {<FontAwesone name='comment-o'></FontAwesone>}></Button>
+     </View>
     </Card>
   )
 }
