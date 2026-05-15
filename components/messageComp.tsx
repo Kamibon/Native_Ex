@@ -12,15 +12,26 @@ export default function MessageComp({
 }) {
   return (
     <KeyboardAvoidingView>
-      <View
-        className={`flex flex-row ${whoSentThis ? "justify-end" : "justify-start"}`}
-      >
+      <View style={{ flexDirection: "row", justifyContent: whoSentThis ? "flex-end" : "flex-start" }}>
         <View
-          className={` ${whoSentThis ? "bg-blue-600" : "bg-gray-500"}  rounded-lg my-3 max-w-[75%]`}
+          style={{
+            backgroundColor: whoSentThis ? "#2563eb" : "#6b7280",
+            borderRadius: 12,
+            marginVertical: 12,
+            maxWidth: "75%",
+          }}
         >
-          <Text className=" text-white p-3">{message}</Text>
-          <Text className=" text-white font-thin absolute right-1 bottom-0 mt-2">
-            {" "}
+          <Text style={{ color: "white", padding: 12 }}>{message}</Text>
+          <Text
+            style={{
+              color: "white",
+              fontWeight: "200",
+              position: "absolute",
+              right: 4,
+              bottom: 0,
+              marginTop: 8,
+            }}
+          >
             {time}
           </Text>
         </View>

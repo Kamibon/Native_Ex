@@ -8,25 +8,23 @@ export default function TopBar() {
   const navigation = useNavigation();
 
   return (
-    <View className="mb-3">
-      <View className=" flex flex-row items-center">
+    <View style={{ marginBottom: 12 }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Icon
-          style={{ marginHorizontal: 5 }}
-          type="antdesign"
-          name="instagram"
+          containerStyle={{ marginHorizontal: 5 }}
+          icon={{ name: "instagram", type: "antdesign" }}
         ></Icon>
-        <Text className=" font-extrabold text-2xl">Per te</Text>
+        <Text style={{ fontWeight: "800", fontSize: 24 }}>Per te</Text>
 
-        <View className=" flex flex-row absolute right-3">
-          <View className=" mx-2">
-            <Icon type="ionicon" name="heart-outline"></Icon>
+        <View style={{ flexDirection: "row", position: "absolute", right: 12 }}>
+          <View style={{ marginHorizontal: 8 }}>
+            <Icon icon={{ name: "heart-outline", type: "ionicon" }}></Icon>
           </View>
           <Icon
             onPress={() =>
               navigation.dispatch(CommonActions.navigate({ name: "chat" }))
             }
-            type="simple-line-icon"
-            name="paper-plane"
+            icon={{ name: "paper-plane", type: "simple-line-icon" }}
           ></Icon>
         </View>
       </View>

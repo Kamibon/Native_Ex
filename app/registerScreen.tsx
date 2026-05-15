@@ -1,10 +1,10 @@
 import { View, Text } from "react-native";
 import React, { useState } from "react";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Button, Input } from "@rneui/themed";
 import { useRouter } from "expo-router";
 
-interface formType {
+interface FormType {
   [index: string]: any;
   name: string;
   surname: string;
@@ -14,14 +14,16 @@ interface formType {
 }
 
 export default function LoginScreen() {
-  const [block, setBlock] = useState(true);
-  const [formData, setFormData] = useState<formType>({
+  const [block, setBlock] = useState(false);
+  const [formData, setFormData] = useState<FormType>({
     name: "",
     surname: "",
     email: "",
     password: "",
     confirmPassword: "",
   });
+
+  const [invisible, setInvisible] = useState(false);
 
   const [formErrors, setFormErrors] = useState({
     name: "",
@@ -39,13 +41,11 @@ export default function LoginScreen() {
 
   function handleSubmit() {
     Object.keys(formData).forEach((el) => {
-      console.log(el);
       if ((formData[el] as string).length === 0) {
         setFormErrors({
           ...formErrors,
           [el]: `Errore nell'inserimento di ${el}`,
         });
-        console.log(el);
       }
 
       /* if(el === 'password' ) {
@@ -62,9 +62,9 @@ export default function LoginScreen() {
   }
 
   return (
-    <View>
-      <View className=" flex flex-col p-[10%] ">
-        <Text className=" text-4xl font-bold">FakeGram</Text>
+    <SafeAreaView>
+      <View style={{ flex: 1, padding: '5%' }}>
+        <Text style = {{fontSize: 32, fontWeight: 'bold'}}>FakeGram</Text>
         <View>
           <Input
             errorMessage={formErrors.name}
@@ -90,7 +90,7 @@ export default function LoginScreen() {
           />
           <Input
             errorMessage={formErrors.password}
-            secureTextEntry
+            secureTextEntry = {invisible}
             onChangeText={(e) => handleChange(e, "password")}
             nativeID="password"
             value={formData.password}
@@ -98,20 +98,21 @@ export default function LoginScreen() {
           />
           <Input
             errorMessage={formErrors.confirmPassword}
-            secureTextEntry
+            secureTextEntry = {invisible}
             onChangeText={(e) => handleChange(e, "confirmPassword")}
             nativeID="confirmPassword"
             value={formData.confirmPassword}
             placeholder="Conferma Password"
           />
+          <Text style={{ color: "#dc2626" }}>
+            {block ? "Errore nella compilazione del form" : ""}
+          </Text>
         </View>
 
-        <Button onPress={() => handleSubmit()}> Crea account</Button>
-        <Text className=" text-red-600">
-          {" "}
-          {block ? "Errore nella compilazione del form" : ""}{" "}
-        </Text>
+        <Button onPress={() => handleSubmit()}>
+          Crea account
+        </Button>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

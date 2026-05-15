@@ -1,5 +1,6 @@
-import { View, Text, FlatList, SafeAreaView } from "react-native";
+import { View, Text, FlatList} from "react-native";
 import React, { useState } from "react";
+import {SafeAreaView} from "react-native-safe-area-context";
 
 import { useAppSelector } from "./redux/store";
 import { Avatar, Button, Overlay, Tile } from "@rneui/base";
@@ -26,8 +27,14 @@ export default function AccountLayout({ userId }: { userId: number }) {
 
   return (
     <SafeAreaView>
-      <View className=" bg-transparent flex h-[8%]">
-        <View className=" flex flex-row justify-end w-full mt-7">
+      <View style={{ backgroundColor: "transparent", height: "8%" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "flex-end",
+            width: "100%",
+            marginTop: 28,
+          }}
           <Button
             buttonStyle={{ backgroundColor: "transparent", width: "40%" }}
             iconPosition="right"
@@ -35,34 +42,47 @@ export default function AccountLayout({ userId }: { userId: number }) {
           />
         </View>
       </View>
-      <View className="flex flex-col my-1 items-center justify-center">
+      <View
+        style={{
+          flexDirection: "column",
+          marginVertical: 4,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <Avatar rounded size={45} source={{ uri: user!.avatar }}></Avatar>
-        <Text className=" font-extrabold">{user!.name}</Text>
+        <Text style={{ fontWeight: "800" }}>{user!.name}</Text>
         <Text>{user!.email}</Text>
-        <View className=" flex flex-row w-full justify-around">
-          <Text className=" font-bold">
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
+            justifyContent: "space-around",
+          }}
+        >
+          <Text style={{ fontWeight: "bold" }}>
             Post {"\n"}
-            <Text className=" font-light">{posts.length}</Text>
+            <Text style={{ fontWeight: "300" }}>{posts.length}</Text>
           </Text>
-          <Text className=" font-bold">
+          <Text style={{ fontWeight: "bold" }}>
             Follower {"\n"}
-            <Text className=" font-light">{user?.password.length}</Text>
+            <Text style={{ fontWeight: "300" }}>{user?.password.length}</Text>
           </Text>
-          <Text className=" font-bold">
+          <Text style={{ fontWeight: "bold" }}>
             Seguiti {"\n"}
-            <Text className=" font-light">{user?.email.length}</Text>
+            <Text style={{ fontWeight: "300" }}>{user?.email.length}</Text>
           </Text>
         </View>
       </View>
 
       <FlatList
-        className=" mb-36"
+        style={{ marginBottom: 144 }}
         key={3}
         data={posts.filter((el) => el.id < 20)}
         initialNumToRender={15}
         numColumns={3}
         renderItem={({ item }) => (
-          <View key={item.id} className="   w-[33.3%]">
+          <View key={item.id} style={{ width: "33.3%" }}>
             <Tile
               featured={false}
               containerStyle={{ margin: 0 }}

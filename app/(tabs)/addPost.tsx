@@ -1,4 +1,5 @@
-import { View, Text, SafeAreaView, Alert } from "react-native";
+import { View, Text, Alert } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import React, { useEffect, useState } from "react";
 import { Button, Input, Skeleton, Tile } from "@rneui/themed";
 import * as DocumentPicker from "expo-document-picker";
@@ -39,7 +40,7 @@ export default function AddPost() {
 
   return (
     <SafeAreaView>
-      <View className=" flex flex-col align-middle m-[13%]">
+      <View style={{ flexDirection: "column", alignItems: "center", margin: "13%", flex: 1 }}>
         {!uri && <Skeleton height={400}></Skeleton>}
         {uri && <Tile imageSrc={{ uri: uri }} width={260} height={400}></Tile>}
 
@@ -62,7 +63,7 @@ export default function AddPost() {
           placeholder="Aggiungi descrizione"
         />
         <Button
-          className=" absolute bottom-0"
+          containerStyle={{ position: "absolute", bottom: 0 }}
           onPress={() => {
             dispatch(
               createPost({ id: 500, description: description, imageUri: uri }),

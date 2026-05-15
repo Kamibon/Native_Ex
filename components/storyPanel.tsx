@@ -47,7 +47,7 @@ const StoryPanel = () => {
   }, [progress]);
 
   return (
-    <View className=" fixed top-0">
+    <View style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
       <FlatList
         initialNumToRender={15}
         contentInset={{ right: 5, left: 5 }}
@@ -74,7 +74,7 @@ const StoryPanel = () => {
               title={item.name}
               source={{ uri: item?.avatar }}
             ></Avatar>
-            <Text className=" font-bold">{item.name}</Text>
+            <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
           </View>
         )}
       ></FlatList>

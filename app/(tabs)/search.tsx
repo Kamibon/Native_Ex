@@ -21,7 +21,7 @@ const Search = () => {
   }, [search]);
 
   return (
-    <SafeAreaView className="  bg-gradient-to-l from-slate-400 to-zinc-600">
+    <SafeAreaView style={{ backgroundColor: "#64748b", flex: 1 }}>
       <SearchBar
         onPress={() => setPressedBar(true)}
         value={search}

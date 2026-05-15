@@ -35,15 +35,29 @@ export default function ChatView({
       >
         <View
           key={room.toString()}
-          className="my-3 ml-2 flex flex-row items-center"
+          style={{
+            marginVertical: 12,
+            marginLeft: 8,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
         >
           <Avatar rounded source={{ uri: avatar }}></Avatar>
-          <View className=" ml-3">
-            <Text className=" font-bold">{name}</Text>
-            <Text className="  overflow-clip">{message}</Text>
+          <View style={{ marginLeft: 12 }}>
+            <Text style={{ fontWeight: "bold" }}>{name}</Text>
+            <Text style={{ overflow: "hidden" }}>{message}</Text>
           </View>
         </View>
-        <Text className=" font-thin absolute bottom-0 right-0">{time}</Text>
+        <Text
+          style={{
+            fontWeight: "200",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+          }}
+        >
+          {time}
+        </Text>
       </Pressable>
       <Divider></Divider>
     </View>

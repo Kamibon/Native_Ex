@@ -33,13 +33,13 @@ export default function Feed() {
   return (
     <View>
       <FlatList
-        className=" mb-32"
+        style={{ marginBottom: 128 }}
         key={2}
         data={posts}
         initialNumToRender={15}
         numColumns={2}
         renderItem={({ item }) => (
-          <View key={item.id} className="   w-[50%]">
+          <View key={item.id} style={{ width: "50%" }}>
             <Tile
               contentContainerStyle={{ height: 0 }}
               onPress={() => {

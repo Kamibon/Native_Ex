@@ -29,32 +29,32 @@ export default function ChatDetails() {
 
   return (
     <KeyboardAvoidingView>
-      <SafeAreaView className=" flex flex-col px-4">
-        <View className=" basis-[12%]  flex flex-row">
+      <SafeAreaView style={{ flex: 1, flexDirection: "column", paddingHorizontal: 16 }}>
+        <View style={{ flexBasis: "12%", flexDirection: "row" }}>
           <Avatar
             rounded
             source={{ uri: params.avatar }}
             title="Utente"
           ></Avatar>
-          <View className=" ml-2 flex flex-col">
-            <Text className=" font-bold">{params.name}</Text>
+          <View style={{ marginLeft: 8, flexDirection: "column" }}>
+            <Text style={{ fontWeight: "bold" }}>{params.name}</Text>
             <Text>Username</Text>
           </View>
-          <View className=" flex flex-row absolute right-4">
-            <View className=" mr-4">
+          <View style={{ flexDirection: "row", position: "absolute", right: 16 }}>
+            <View style={{ marginRight: 16 }}>
               <Button
                 buttonStyle={{ backgroundColor: "transparent" }}
-                icon={<Icon type="fontisto" name="phone"></Icon>}
+                icon={{ name: "phone", type: "fontisto" }}
               ></Button>
             </View>
             <Button
               buttonStyle={{ backgroundColor: "transparent" }}
-              icon={<Icon type="octicon" name="device-camera-video"></Icon>}
+              icon={{ name: "device-camera-video", type: "octicon" }}
             ></Button>
           </View>
         </View>
 
-        <View className=" basis-[80%]  w-full flex flex-col  ">
+        <View style={{ flexBasis: "80%", width: "100%", flexDirection: "column" }}>
           <FlatList
             data={roomMessages}
             renderItem={({ item }) => (
@@ -66,7 +66,7 @@ export default function ChatDetails() {
             )}
           ></FlatList>
         </View>
-        <View className=" flex flex-row fixed bottom-[1%] right-1">
+        <View style={{ flexDirection: "row", position: "absolute", bottom: "1%", right: 4 }}>
           <Input
             returnKeyType="send"
             onSubmitEditing={() => {

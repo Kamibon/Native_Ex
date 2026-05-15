@@ -10,7 +10,7 @@ export default function PostPanel() {
 
   return (
     <ScrollView
-      className=" mb-36"
+      style={{ marginBottom: 144 }}
       contentContainerStyle={{ alignItems: "center", gap: 10 }}
     >
       {posts?.map((item) => (

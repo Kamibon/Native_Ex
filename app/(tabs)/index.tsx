@@ -1,9 +1,9 @@
-import { Tabs, useNavigation, useRouter } from "expo-router";
-import { Button, StatusBar, Text, View } from "react-native";
-import StoryPanel from "@/components/storyPanel";
 import PostPanel from "@/components/postPanel";
-import { SafeAreaView } from "react-native-safe-area-context";
+import StoryPanel from "@/components/storyPanel";
 import TopBar from "@/components/topBar";
+import { useRouter } from "expo-router";
+import { Button } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Homepage() {
   const router = useRouter();
@@ -12,11 +12,11 @@ export default function Homepage() {
     <SafeAreaView>
       <Button
         title="Login"
-        onPress={() => router.navigate("/registerScreen")}
+        onPress={() => router.replace("/registerScreen")}
       ></Button>
-      <TopBar></TopBar>
-      <StoryPanel></StoryPanel>
-      <PostPanel></PostPanel>
+      {/* <TopBar></TopBar> */}
+      <StoryPanel/>
+      <PostPanel/>
     </SafeAreaView>
   );
 }
