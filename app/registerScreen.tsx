@@ -48,23 +48,25 @@ export default function LoginScreen() {
         });
       }
 
-      /* if(el === 'password' ) {
+      if (el === "password") {
         let regex = /[A-Za-z]+[0-9]+#/i;
-        if(!regex.test(formData.password as string)){ setFormErrors({...formErrors, 
-          password:`La password deve contenere un numero ed un carattere speciale`})
-        
+        if (!regex.test(formData.password as string)) {
+          setFormErrors({
+            ...formErrors,
+            password: `La password deve contenere un numero ed un carattere speciale`,
+          });
         }
-                             } */
+      }
     });
-    /*  Object.keys(formData).forEach(el=>{
-        setFormErrors({...formErrors, [el]:''})
-     }) */
+    Object.keys(formData).forEach((el) => {
+      setFormErrors({ ...formErrors, [el]: "" });
+    });
   }
 
   return (
     <SafeAreaView>
-      <View style={{ flex: 1, padding: '5%' }}>
-        <Text style = {{fontSize: 32, fontWeight: 'bold'}}>FakeGram</Text>
+      <View style={{ flex: 1, padding: "5%" }}>
+        <Text style={{ fontSize: 32, fontWeight: "bold" }}>FakeGram</Text>
         <View>
           <Input
             errorMessage={formErrors.name}
@@ -90,7 +92,7 @@ export default function LoginScreen() {
           />
           <Input
             errorMessage={formErrors.password}
-            secureTextEntry = {invisible}
+            secureTextEntry={invisible}
             onChangeText={(e) => handleChange(e, "password")}
             nativeID="password"
             value={formData.password}
@@ -98,7 +100,7 @@ export default function LoginScreen() {
           />
           <Input
             errorMessage={formErrors.confirmPassword}
-            secureTextEntry = {invisible}
+            secureTextEntry={invisible}
             onChangeText={(e) => handleChange(e, "confirmPassword")}
             nativeID="confirmPassword"
             value={formData.confirmPassword}
@@ -109,9 +111,7 @@ export default function LoginScreen() {
           </Text>
         </View>
 
-        <Button onPress={() => handleSubmit()}>
-          Crea account
-        </Button>
+        <Button onPress={() => handleSubmit()}>Crea account</Button>
       </View>
     </SafeAreaView>
   );

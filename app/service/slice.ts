@@ -14,17 +14,19 @@ export interface PostDto {
   id: number;
   title: string;
   price: number;
+  userId: number;
   description: string;
   images: string[];
 }
 
-export interface creationPost {
+export interface CreationPost {
   id: Number;
   imageUri: string;
+  userId: number;
   description: string;
 }
 
-interface stateType {
+interface StateType {
   users: UserDto[];
   posts: PostDto[];
   postCreationStatus: "success" | "failure" | "idle";
@@ -32,7 +34,7 @@ interface stateType {
   rooms: Room[];
 }
 
-const initialState: stateType = {
+const initialState: StateType = {
   users: [],
   posts: [],
   postCreationStatus: "idle",
@@ -105,7 +107,7 @@ export const getPosts = createAsyncThunk("posts/get", async (thunkApi) => {
 
 export const createPost = createAsyncThunk(
   "posts/post",
-  async (body: creationPost, thunkApi) => {
+  async (body: CreationPost, thunkApi) => {
     return dataService.createPost(body);
   },
 );
@@ -118,10 +120,10 @@ export const stateSlice = createSlice({
       state.postCreationStatus = "idle";
     },
     addMessage(state, action) {
-      const { s_userId, time, text } = action.payload;
+      const { s_userId, time, text, audio } = action.payload;
       state.rooms
         .find((el) => el.room_id == action.payload.room_id)
-        ?.message_list.push({ s_userId, time, text });
+        ?.message_list.push({ s_userId, time, text, audio });
     },
     loadPost(state, action) {
       const { id, imageUri, description } = action.payload;
@@ -131,8 +133,9 @@ export const stateSlice = createSlice({
         images: [imageUri],
         title: "New Post",
         price: 0,
+        userId: 1
       };
-      state.posts.push(newPost);
+      state.posts = [newPost, ...state.posts];
     },
   },
   extraReducers: (builder) =>

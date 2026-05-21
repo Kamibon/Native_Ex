@@ -1,5 +1,5 @@
 import { FakeServiceInt } from "./fakeServiceInt";
-import { creationPost } from "./slice";
+import { CreationPost } from "./slice";
 
 const url = "https://api.escuelajs.co/api/v1/";
 export class FakeService implements FakeServiceInt {
@@ -9,7 +9,7 @@ export class FakeService implements FakeServiceInt {
   public getPosts() {
     return fetch(url + "products").then((res) => res.json());
   }
-  public createPost(body: creationPost): Promise<any> {
+  public createPost(body: CreationPost): Promise<any> {
     return fetch("https://jsonplaceholder.typicode.com/posts/", {
       method: "POST",
       body: JSON.stringify(body),

@@ -1,32 +1,32 @@
-import { View, Text } from "react-native";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { useRouter } from "expo-router";
 import React from "react";
-import { Icon } from "@rneui/themed";
-import { useNavigation } from "expo-router";
-import { CommonActions } from "@react-navigation/native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 export default function TopBar() {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   return (
-    <View style={{ marginBottom: 12 }}>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <Icon
-          containerStyle={{ marginHorizontal: 5 }}
-          icon={{ name: "instagram", type: "antdesign" }}
-        ></Icon>
+    <View style={{ marginBottom: 4 }}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 16,
+          width: "100%",
+        }}
+      >
+        <TouchableOpacity onPress={() => router.push("/addPost")}>
+          <Ionicons name="add" size={28} />
+        </TouchableOpacity>
         <Text style={{ fontWeight: "800", fontSize: 24 }}>Per te</Text>
 
-        <View style={{ flexDirection: "row", position: "absolute", right: 12 }}>
-          <View style={{ marginHorizontal: 8 }}>
-            <Icon icon={{ name: "heart-outline", type: "ionicon" }}></Icon>
-          </View>
-          <Icon
-            onPress={() =>
-              navigation.dispatch(CommonActions.navigate({ name: "chat" }))
-            }
-            icon={{ name: "paper-plane", type: "simple-line-icon" }}
-          ></Icon>
-        </View>
+        <Ionicons
+          onPress={() => router.push("/chat")}
+          name="paper-plane-outline"
+          size={24}
+        />
       </View>
     </View>
   );

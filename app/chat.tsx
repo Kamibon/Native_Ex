@@ -11,7 +11,7 @@ export default function Chat() {
   const me = 1;
 
   return (
-    <SafeAreaView style={{ padding: 5 }}>
+    <SafeAreaView style={{ paddingVertical: 12, paddingHorizontal: 16, flex: 1 }}>
       <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
         <Text style={{ fontWeight: "bold" }}>Messaggi</Text>
         <Text style={{ fontWeight: "bold", color: "#3b82f6" }}>Richieste</Text>

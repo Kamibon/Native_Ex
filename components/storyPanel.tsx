@@ -47,12 +47,12 @@ const StoryPanel = () => {
   }, [progress]);
 
   return (
-    <View style={{ position: "absolute", top: 0, left: 0, right: 0 }}>
+    <View style={{ width: "100%" }}>
       <FlatList
         initialNumToRender={15}
         contentInset={{ right: 5, left: 5 }}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ padding: 5, gap: 10 }}
+        contentContainerStyle={{ paddingHorizontal: 8, gap: 10 }}
         horizontal
         data={users}
         renderItem={({ item, index }) => (
@@ -77,32 +77,34 @@ const StoryPanel = () => {
             <Text style={{ fontWeight: "bold" }}>{item.name}</Text>
           </View>
         )}
-      ></FlatList>
+      />
       {openModal.isOpen && (
         <Overlay
           onBackdropPress={() => setOpenModal({ ...openModal, isOpen: false })}
           isVisible={openModal.isOpen}
         >
           <LinearProgress
-            style={{ marginVertical: 5 }}
             value={progress}
             color="black"
             variant="determinate"
-          ></LinearProgress>
+         />
           <Tile
             onPress={() => nextStory()}
-            height={screenHeight * 0.9}
+            height={screenHeight}
             imageSrc={{ uri: openModal.uri }}
-          ></Tile>
+          />
           <Pressable
+          style={{ position: "absolute", top: 30, left: 20 }}
             onPress={() =>
-              router.navigate({
+              router.push({
                 pathname: "/genericAccount",
                 params: { id: openModal.userId },
               })
             }
           >
-            <Text>{users.find((el) => el.id == openModal.userId)?.name}</Text>
+            <Text style={{ color: "white", fontWeight: "bold", fontSize: 16 }}>
+              {users.find((el) => el.id == openModal.userId)?.name}
+            </Text>
           </Pressable>
         </Overlay>
       )}

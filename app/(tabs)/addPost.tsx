@@ -1,15 +1,21 @@
-import { View, Text, Alert } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import React, { useEffect, useState } from "react";
-import { Button, Input, Skeleton, Tile } from "@rneui/themed";
+import { Button, Input, Skeleton } from "@rneui/themed";
 import * as DocumentPicker from "expo-document-picker";
+import { useRouter } from "expo-router";
+import React, { useEffect, useState } from "react";
+import {
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useAppDispatch, useAppSelector } from "../redux/store";
 import {
   createPost,
   loadPost,
   resetPostCreationStatus,
 } from "../service/slice";
-import { useAppDispatch, useAppSelector } from "../redux/store";
-import { CommonActions, useNavigation } from "@react-navigation/native";
 
 export default function AddPost() {
   const [description, setDescription] = useState("");
@@ -18,7 +24,7 @@ export default function AddPost() {
   const loadedPost = useAppSelector(
     (state) => state.fakeGram.postCreationStatus,
   );
-  const navigation = useNavigation();
+  const router = useRouter();
 
   useEffect(() => {
     if (loadedPost === "success") {
@@ -27,52 +33,86 @@ export default function AddPost() {
         "Potrai vedere il tuo post sulla bacheca",
       );
       dispatch(loadPost({ id: 500, description, imageUri: uri }));
+      const id = setTimeout(() => {
+        dispatch(resetPostCreationStatus());
+
+        router.push("/");
+      }, 3000);
+      return () => clearTimeout(id);
     }
     if (loadedPost === "failure")
       Alert.alert("Fallimento nel caricamento del post");
-    const id = setTimeout(() => {
-      dispatch(resetPostCreationStatus());
-
-      navigation.dispatch(CommonActions.navigate({ name: "index" }));
-    }, 3000);
-    return () => clearTimeout(id);
+    /*   */
   }, [loadedPost]);
 
   return (
-    <SafeAreaView>
-      <View style={{ flexDirection: "column", alignItems: "center", margin: "13%", flex: 1 }}>
-        {!uri && <Skeleton height={400}></Skeleton>}
-        {uri && <Tile imageSrc={{ uri: uri }} width={260} height={400}></Tile>}
-
-        <Button
-          onPress={async () => {
-            const res = await DocumentPicker.getDocumentAsync({
-              type: "image/*",
-            });
-            const file = await res;
-
-            if (file.assets) setUri(file.assets[0].uri);
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 60}
+      >
+        <ScrollView
+          contentContainerStyle={{
+            flexGrow: 1,
+            alignItems: "center",
+            justifyContent: "center",
+            paddingHorizontal: 20,
+            paddingVertical: 24,
           }}
+          keyboardShouldPersistTaps="handled"
         >
-          Aggiungi foto
-        </Button>
-        <Input
-          keyboardAppearance="dark"
-          style={{ margin: 5 }}
-          onChangeText={(e) => setDescription(e)}
-          placeholder="Aggiungi descrizione"
-        />
-        <Button
-          containerStyle={{ position: "absolute", bottom: 0 }}
-          onPress={() => {
-            dispatch(
-              createPost({ id: 500, description: description, imageUri: uri }),
-            );
-          }}
-        >
-          Carica il post
-        </Button>
-      </View>
+          {!uri && (
+            <Skeleton style={{ borderRadius: 10 }} height={400} width={260} />
+          )}
+          {uri && (
+            <Image
+              style={{ borderRadius: 10 }}
+              src={uri}
+              width={260}
+              height={400}
+            />
+          )}
+
+          <Button
+            onPress={async () => {
+              const res = await DocumentPicker.getDocumentAsync({
+                type: "image/*",
+              });
+              const { assets } = await res;
+
+              if (assets) setUri(assets[0].uri);
+            }}
+          >
+            Aggiungi foto
+          </Button>
+          <Input
+            keyboardAppearance="dark"
+            style={{ margin: 5 }}
+            value={description}
+            onChangeText={(e) => setDescription(e)}
+            placeholder="Aggiungi descrizione"
+          />
+          <Button
+            onPress={() => {
+              dispatch(
+                createPost({
+                  id: 500,
+                  description: description,
+                  userId:1,
+                  imageUri: uri,
+                }),
+              );
+              setTimeout(() => {
+                setUri("");
+                setDescription("");
+              }, 1000);
+            }}
+          >
+            Carica il post
+          </Button>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }

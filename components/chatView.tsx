@@ -1,5 +1,5 @@
-import { View, Text, Pressable } from "react-native";
 import React from "react";
+import { Pressable, Text, View } from "react-native";
 
 import { Avatar } from "@rneui/themed";
 import { useRouter } from "expo-router";
@@ -21,13 +21,11 @@ export default function ChatView({
 }) {
   const router = useRouter();
 
-  //navigation.dispatch(CommonActions.navigate({name:'chatDetails', params:{id,avatar,name,message}}))
-
   return (
     <View>
       <Pressable
         onPress={() =>
-          router.navigate({
+          router.push({
             pathname: "/chatDetails",
             params: { room, avatar, name },
           })
@@ -36,8 +34,8 @@ export default function ChatView({
         <View
           key={room.toString()}
           style={{
-            marginVertical: 12,
-            marginLeft: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 12,
             flexDirection: "row",
             alignItems: "center",
           }}
@@ -59,7 +57,7 @@ export default function ChatView({
           {time}
         </Text>
       </Pressable>
-      <Divider></Divider>
+      <Divider />
     </View>
   );
 }

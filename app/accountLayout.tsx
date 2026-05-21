@@ -1,12 +1,13 @@
-import { View, Text, FlatList} from "react-native";
 import React, { useState } from "react";
-import {SafeAreaView} from "react-native-safe-area-context";
+import { FlatList, Text, View } from "react-native";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
-import { useAppSelector } from "./redux/store";
-import { Avatar, Button, Overlay, Tile } from "@rneui/base";
 import { Details } from "@/components/feed";
+import { Avatar, Button, Overlay, Tile } from "@rneui/base";
+import { useAppSelector } from "./redux/store";
 
-import Feather from "@expo/vector-icons/Feather";
+import NoPosts from "@/components/noPosts";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { useRouter } from "expo-router";
 
 export default function AccountLayout({ userId }: { userId: number }) {
@@ -17,7 +18,12 @@ export default function AccountLayout({ userId }: { userId: number }) {
     state.fakeGram.users.find((el) => el.id == userId),
   );
 
-  if (!user) router.navigate("/(tabs)/");
+  const insets = useSafeAreaInsets()
+
+  if (!user) {
+    router.replace("/");
+    return null;
+  }
 
   const [showDetails, setShownDetails] = useState({
     isShown: false,
@@ -26,8 +32,7 @@ export default function AccountLayout({ userId }: { userId: number }) {
   });
 
   return (
-    <SafeAreaView>
-      <View style={{ backgroundColor: "transparent", height: "8%" }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
         <View
           style={{
             flexDirection: "row",
@@ -35,17 +40,19 @@ export default function AccountLayout({ userId }: { userId: number }) {
             width: "100%",
             marginTop: 28,
           }}
+        >
           <Button
-            buttonStyle={{ backgroundColor: "transparent", width: "40%" }}
+            buttonStyle={{ backgroundColor: "transparent", paddingRight: 16 }}
             iconPosition="right"
-            icon={<Feather name="menu"></Feather>}
+            icon={<Ionicons name="menu" size={20}/>}
           />
-        </View>
       </View>
       <View
         style={{
           flexDirection: "column",
-          marginVertical: 4,
+          gap: 8,
+          marginTop: 4,
+          marginBottom: 16,
           alignItems: "center",
           justifyContent: "center",
         }}
@@ -76,17 +83,19 @@ export default function AccountLayout({ userId }: { userId: number }) {
       </View>
 
       <FlatList
-        style={{ marginBottom: 144 }}
-        key={3}
-        data={posts.filter((el) => el.id < 20)}
+        style={{ flex: 1, paddingTop: 8 }}
+        ListEmptyComponent={<NoPosts />}
+        data={posts.filter((el) => el.userId == userId)}
+        keyExtractor={(item) => item.id.toString()}
         initialNumToRender={15}
         numColumns={3}
+        columnWrapperStyle={{ flex: 1, margin: 0, padding: 0 }}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 80, padding: 0, margin: 0 }}
         renderItem={({ item }) => (
-          <View key={item.id} style={{ width: "33.3%" }}>
+          <View style={{ flex: 1, margin: 0, padding: 0, width: "33.3%" }}>
             <Tile
               featured={false}
-              containerStyle={{ margin: 0 }}
-              contentContainerStyle={{ height: 0 }}
+              containerStyle={{ margin: 0, padding: 0 }}
               onPress={() => {
                 setShownDetails({
                   isShown: true,
@@ -95,10 +104,10 @@ export default function AccountLayout({ userId }: { userId: number }) {
                 });
               }}
               imageSrc={{ uri: item.images[0] }}
-            ></Tile>
+            />
           </View>
         )}
-      ></FlatList>
+      />
 
       <Overlay
         onPressOut={() => setShownDetails({ ...showDetails, isShown: false })}
@@ -108,7 +117,7 @@ export default function AccountLayout({ userId }: { userId: number }) {
           <Details
             uri={showDetails.uri}
             description={showDetails.description}
-          ></Details>
+          />
         )}
       </Overlay>
     </SafeAreaView>

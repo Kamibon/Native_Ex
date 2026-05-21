@@ -21,41 +21,53 @@ const Search = () => {
   }, [search]);
 
   return (
-    <SafeAreaView style={{ backgroundColor: "#64748b", flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "white" }}>
       <SearchBar
         onPress={() => setPressedBar(true)}
         value={search}
         placeholder="Cerca qui..."
         onChangeText={setSearch}
         inputStyle={{ color: "white" }}
-      ></SearchBar>
+      />
       {search.length > 3 && (
         <FlatList
+          ListEmptyComponent={<Text>Nessun utente trovato</Text>}
+          contentContainerStyle = {{ padding: filtered.length > 0 ? 0 : 16, gap: 12 }}
           data={filtered}
           initialNumToRender={10}
           renderItem={({ item }) => (
             <Card
               containerStyle={{
-                alignItems: "center",
-                justifyContent: "center",
+                borderWidth: 0,
+                borderColor: "white",
+                shadowColor: "white",
               }}
             >
-              <Card.Title
-                onPress={() =>
-                  router.navigate({
-                    pathname: "/genericAccount",
-                    params: { id: item.id },
-                  })
-                }
+              <View
+                style={{
+                  gap: 12,
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
               >
-                {item.name}{" "}
-                <Avatar rounded source={{ uri: item.avatar }}></Avatar>{" "}
-              </Card.Title>
+                <Avatar rounded source={{ uri: item.avatar }} />
+                <Text
+                style = {{fontSize: 16, fontWeight: 'bold'}}
+                  onPress={() =>
+                    router.push({
+                      pathname: "/genericAccount",
+                      params: { id: item.id },
+                    })
+                  }
+                >
+                  {item.name}
+                </Text>
+              </View>
             </Card>
           )}
-        ></FlatList>
+        />
       )}
-      {!pressedBar && <Feed></Feed>}
+      {!pressedBar && <Feed />}
     </SafeAreaView>
   );
 };

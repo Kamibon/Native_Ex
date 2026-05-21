@@ -2,7 +2,8 @@ import { useAppSelector } from "@/app/redux/store";
 import { Overlay } from "@rneui/base";
 import { Tile } from "@rneui/themed";
 import React, { useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function Details({
   uri,
@@ -24,6 +25,8 @@ export function Details({
 export default function Feed() {
   const posts = useAppSelector((state) => state.fakeGram.posts);
 
+  const insets = useSafeAreaInsets();
+
   const [showDetails, setShownDetails] = useState({
     isShown: false,
     uri: "",
@@ -33,13 +36,12 @@ export default function Feed() {
   return (
     <View>
       <FlatList
-        style={{ marginBottom: 128 }}
-        key={2}
+        contentContainerStyle = {{ backgroundColor: 'white', paddingBottom: insets.bottom }}
         data={posts}
         initialNumToRender={15}
         numColumns={2}
         renderItem={({ item }) => (
-          <View key={item.id} style={{ width: "50%" }}>
+          <TouchableOpacity key={item.id} style={{ width: "50%" }}>
             <Tile
               contentContainerStyle={{ height: 0 }}
               onPress={() => {
@@ -50,10 +52,10 @@ export default function Feed() {
                 });
               }}
               imageSrc={{ uri: item.images[0] }}
-            ></Tile>
-          </View>
+            />
+          </TouchableOpacity>
         )}
-      ></FlatList>
+      />
 
       <Overlay
         onPressOut={() => {
@@ -64,7 +66,7 @@ export default function Feed() {
         <Details
           uri={showDetails.uri}
           description={showDetails.description}
-        ></Details>
+        />
       </Overlay>
     </View>
   );

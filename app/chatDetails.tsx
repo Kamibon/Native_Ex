@@ -1,12 +1,22 @@
-import { View, Text, KeyboardAvoidingView, FlatList } from "react-native";
-import React, { useState } from "react";
-import { Avatar } from "@rneui/base";
-import { Button, Icon, Input } from "@rneui/themed";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useLocalSearchParams, useNavigation, useRouter } from "expo-router";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { useAppDispatch, useAppSelector } from "./redux/store";
 import MessageComp from "@/components/messageComp";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Avatar } from "@rneui/base";
+import { Button } from "@rneui/themed";
+import { useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
+import {
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useRecording } from "./hooks/useRecording";
+import { useAppDispatch, useAppSelector } from "./redux/store";
 import { addMessage } from "./service/slice";
 
 export default function ChatDetails() {
@@ -16,6 +26,27 @@ export default function ChatDetails() {
       avatar: string;
       name: string;
     };
+
+  const [audioUri, setAudioUri] = useState<string | null>(null);
+
+  const { stopRecording, startRecording } = useRecording(audioUri);
+
+  const createMessage = (audioUriToSend: string | null = null) => {
+    dispatch(
+      addMessage({
+        text: message,
+        time: (
+          new Date().getHours() +
+          ":" +
+          new Date().getMinutes()
+        ).toString(),
+        s_userId: me,
+        room_id: params.room,
+        audio: audioUriToSend ?? audioUri ?? null,
+      }),
+    );
+    setAudioUri(null);
+  };
 
   const rooms = useAppSelector((state) => state.fakeGram.rooms);
   const roomMessages = rooms.find(
@@ -28,86 +59,110 @@ export default function ChatDetails() {
   const dispatch = useAppDispatch();
 
   return (
-    <KeyboardAvoidingView>
-      <SafeAreaView style={{ flex: 1, flexDirection: "column", paddingHorizontal: 16 }}>
-        <View style={{ flexBasis: "12%", flexDirection: "row" }}>
-          <Avatar
-            rounded
-            source={{ uri: params.avatar }}
-            title="Utente"
-          ></Avatar>
-          <View style={{ marginLeft: 8, flexDirection: "column" }}>
-            <Text style={{ fontWeight: "bold" }}>{params.name}</Text>
-            <Text>Username</Text>
-          </View>
-          <View style={{ flexDirection: "row", position: "absolute", right: 16 }}>
-            <View style={{ marginRight: 16 }}>
+    <KeyboardAvoidingView
+      style={{ flex: 1, paddingTop: 16 }}
+      behavior="padding"
+      keyboardVerticalOffset={0}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <SafeAreaView
+          style={{ flex: 1, flexDirection: "column", paddingHorizontal: 16 }}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 12,
+                flex: 1,
+              }}
+            >
+              <Avatar rounded source={{ uri: params.avatar }} title="Utente" />
+              <View style={{ flexDirection: "column" }}>
+                <Text style={{ fontWeight: "bold" }}>{params.name}</Text>
+                <Text>Username</Text>
+              </View>
+            </View>
+            <View style={{ flexDirection: "row" }}>
+              <View>
+                <Button
+                  buttonStyle={{ backgroundColor: "transparent" }}
+                  icon={<Ionicons name="call" size={24} />}
+                />
+              </View>
               <Button
                 buttonStyle={{ backgroundColor: "transparent" }}
-                icon={{ name: "phone", type: "fontisto" }}
-              ></Button>
+                icon={<Ionicons name="videocam" size={24} />}
+              />
             </View>
-            <Button
-              buttonStyle={{ backgroundColor: "transparent" }}
-              icon={{ name: "device-camera-video", type: "octicon" }}
-            ></Button>
           </View>
-        </View>
 
-        <View style={{ flexBasis: "80%", width: "100%", flexDirection: "column" }}>
           <FlatList
             data={roomMessages}
-            renderItem={({ item }) => (
-              <MessageComp
-                message={item.text}
-                time={item.time}
-                whoSentThis={item.s_userId === me}
-              ></MessageComp>
-            )}
-          ></FlatList>
-        </View>
-        <View style={{ flexDirection: "row", position: "absolute", bottom: "1%", right: 4 }}>
-          <Input
-            returnKeyType="send"
-            onSubmitEditing={() => {
-              dispatch(
-                addMessage({
-                  text: message,
-                  time: (
-                    new Date().getHours() +
-                    ":" +
-                    new Date().getMinutes()
-                  ).toString(),
-                  s_userId: me,
-                  room_id: params.room,
-                }),
-              );
-
-              setMessage("");
-            }}
-            value={message}
-            onChangeText={(t) => setMessage(t)}
+            renderItem={({ item }) => <MessageComp message={item} />}
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+            keyboardDismissMode="on-drag"
+            style={{ flex: 1 }}
+            contentContainerStyle={{ paddingVertical: 12, gap: 8 }}
           />
-          <Button
-            onPress={() => {
-              dispatch(
-                addMessage({
-                  text: message,
-                  time: (
-                    new Date().getHours() +
-                    ":" +
-                    new Date().getMinutes()
-                  ).toString(),
-                  s_userId: me,
-                  room_id: params.room,
-                }),
-              );
-              setMessage("");
+
+          <View
+            style={{
+              alignItems: "center",
+              flexDirection: "row",
+              gap: 12,
+              paddingHorizontal: 16,
             }}
-            icon={<FontAwesome name="paper-plane"></FontAwesome>}
-          ></Button>
-        </View>
-      </SafeAreaView>
+          >
+            <TextInput
+              autoFocus
+              multiline
+              style={{
+                flex: 1,
+                paddingHorizontal: 12,
+                paddingVertical: 10,
+                backgroundColor: "#F3E8FF",
+                borderRadius: 20,
+                textAlignVertical: "top",
+              }}
+              returnKeyType="send"
+              onSubmitEditing={() => {
+                createMessage();
+                setMessage("");
+              }}
+              value={message}
+              onChangeText={(t) => setMessage(t)}
+            />
+            <TouchableWithoutFeedback
+              onPress={() => {
+                if (!message.trim()) {
+                  alert("Il messaggio non può essere vuoto");
+                  return;
+                }
+                createMessage();
+                setMessage("");
+              }}
+            >
+              <Ionicons name="send" size={24} />
+            </TouchableWithoutFeedback>
+            <TouchableWithoutFeedback>
+              <Ionicons
+                name="mic"
+                size={24}
+                onPressIn={startRecording}
+                onPressOut={async () => {
+                  const uri = await stopRecording();
+                  if (uri) {
+                    setAudioUri(uri);
+                    createMessage(uri);
+                  }
+                }}
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        </SafeAreaView>
+      </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
 }

@@ -1,7 +1,5 @@
+import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
-import Feather from "@expo/vector-icons/Feather";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 
 export default function TabLayout() {
   return (
@@ -9,7 +7,6 @@ export default function TabLayout() {
       initialRouteName="index"
       screenOptions={{
         tabBarShowLabel: false,
-        tabBarActiveBackgroundColor: "#C5C6D0",
       }}
     >
       <Tabs.Screen
@@ -17,7 +14,7 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: "Homepage",
-          tabBarIcon: () => <Feather name="home" size={24} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "home" : "home-outline"} size={24} />,
         }}
       />
       <Tabs.Screen
@@ -25,7 +22,7 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: "Search",
-          tabBarIcon: () => <AntDesign name="search" size={24} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "search" : "search-outline"} size={24} />,
         }}
       />
       <Tabs.Screen
@@ -33,7 +30,7 @@ export default function TabLayout() {
         options={{
           headerShown: false,
           title: "Aggiungi post",
-          tabBarIcon: () => <AntDesign name="plus" size={24} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "add" : "add-outline"} size={24} />,
         }}
       />
       <Tabs.Screen
@@ -42,7 +39,7 @@ export default function TabLayout() {
           headerShown: false,
 
           title: "Your account",
-          tabBarIcon: () => <MaterialCommunityIcons name="account" size={24} />,
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "person" : "person-outline"} size={24} />,
         }}
       />
     </Tabs>

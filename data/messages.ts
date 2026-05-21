@@ -3,6 +3,7 @@ export interface Message {
   s_userId: number;
   text: string;
   time: string;
+  audio?: string;
 }
 
 export interface Room {

@@ -1,10 +1,10 @@
 import { FakeService } from "./FakeService";
-import { creationPost } from "./slice";
+import { CreationPost } from "./slice";
 
 export interface FakeServiceInt {
   getUsers(): Promise<any>;
   getPosts(): Promise<any>;
-  createPost(body: creationPost): Promise<any>;
+  createPost(body: CreationPost): Promise<any>;
 }
 
 export function newFakeService() {

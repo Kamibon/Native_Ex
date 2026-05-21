@@ -1,41 +1,43 @@
-import { View, Text, KeyboardAvoidingView } from "react-native";
-import React, { useState } from "react";
+import { useRecording } from "@/app/hooks/useRecording";
+import { Message } from "@/data/messages";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 
-export default function MessageComp({
-  message,
-  time,
-  whoSentThis,
-}: {
-  message: string;
-  time: string;
-  whoSentThis: boolean;
-}) {
+export default function MessageComp({ message }: { message: Message }) {
+  const { playAudio, isPlaying } = useRecording(
+    message.audio ?? null,
+  );
   return (
-    <KeyboardAvoidingView>
-      <View style={{ flexDirection: "row", justifyContent: whoSentThis ? "flex-end" : "flex-start" }}>
-        <View
+    <View
+      style={{
+        flexDirection: "column",
+        alignSelf: message.s_userId === 1 ? "flex-end" : "flex-start",
+        padding: 12,
+        backgroundColor: message.s_userId === 1 ? "#2563eb" : "#6b7280",
+        borderRadius: 12,
+        maxWidth: "75%",
+      }}
+    >
+      {message.text && (
+        <Text style={{ color: "white", fontSize: 16 }}>{message.text}</Text>
+      )}
+      {message.audio && (
+        <TouchableOpacity onPress={() => playAudio()}>
+          <Ionicons name="mic" color={isPlaying? '#add8e6': 'white'} size={20}/>
+        </TouchableOpacity>
+      )}
+      <View style={{ alignItems: "flex-end" }}>
+        <Text
           style={{
-            backgroundColor: whoSentThis ? "#2563eb" : "#6b7280",
-            borderRadius: 12,
-            marginVertical: 12,
-            maxWidth: "75%",
+            color: "white",
+            fontWeight: "200",
+            fontSize: 12,
           }}
         >
-          <Text style={{ color: "white", padding: 12 }}>{message}</Text>
-          <Text
-            style={{
-              color: "white",
-              fontWeight: "200",
-              position: "absolute",
-              right: 4,
-              bottom: 0,
-              marginTop: 8,
-            }}
-          >
-            {time}
-          </Text>
-        </View>
+          {message.time}
+        </Text>
       </View>
-    </KeyboardAvoidingView>
+    </View>
   );
 }
