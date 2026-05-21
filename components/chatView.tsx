@@ -1,25 +1,63 @@
-import { View, Text, Pressable } from 'react-native'
-import React from 'react'
-import { UserDto } from '@/app/service/slice'
-import { Avatar } from '@rneui/themed'
-import { useNavigation } from 'expo-router'
-import { CommonActions } from '@react-navigation/native'
+import React from "react";
+import { Pressable, Text, View } from "react-native";
 
-export default function ChatView( {id, avatar, name, message} :{id:Number, avatar: string, name:string, message: string}) {
+import { Avatar } from "@rneui/themed";
+import { useRouter } from "expo-router";
 
-const navigation = useNavigation()
+import { Divider } from "@rneui/base";
+
+export default function ChatView({
+  room,
+  avatar,
+  name,
+  message,
+  time,
+}: {
+  room: number;
+  avatar: string;
+  name: string;
+  message: string;
+  time: string;
+}) {
+  const router = useRouter();
 
   return (
-    <View >
-        <Pressable onPress={()=>navigation.dispatch(CommonActions.navigate({name:'chatDetails', params:{id,avatar,name,message}}))}>
-      <View  key={id.toString()} className='my-3 ml-2 flex flex-row items-center'>
-          <Avatar  rounded source={{uri:avatar}}></Avatar>
-            <View className=' ml-3'>
-           <Text className=' font-bold'>{name}</Text>
-           <Text className='  overflow-clip'>{message}</Text>
-           </View>
-       </View>
-       </Pressable>
+    <View>
+      <Pressable
+        onPress={() =>
+          router.push({
+            pathname: "/chatDetails",
+            params: { room, avatar, name },
+          })
+        }
+      >
+        <View
+          key={room.toString()}
+          style={{
+            paddingHorizontal: 12,
+            paddingVertical: 12,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Avatar rounded source={{ uri: avatar }}></Avatar>
+          <View style={{ marginLeft: 12 }}>
+            <Text style={{ fontWeight: "bold" }}>{name}</Text>
+            <Text style={{ overflow: "hidden" }}>{message}</Text>
+          </View>
+        </View>
+        <Text
+          style={{
+            fontWeight: "200",
+            position: "absolute",
+            bottom: 0,
+            right: 0,
+          }}
+        >
+          {time}
+        </Text>
+      </Pressable>
+      <Divider />
     </View>
-  )
+  );
 }

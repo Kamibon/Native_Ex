@@ -1,53 +1,47 @@
-import { Tabs } from 'expo-router';
-import Feather from '@expo/vector-icons/Feather';
-import AntDesign from '@expo/vector-icons/AntDesign';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { Tabs } from "expo-router";
 
 export default function TabLayout() {
-
-  
   return (
-    <Tabs initialRouteName='index' screenOptions={{ tabBarShowLabel:false, tabBarActiveBackgroundColor:'#C5C6D0'}}>
+    <Tabs
+      initialRouteName="index"
+      screenOptions={{
+        tabBarShowLabel: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          headerShown:false,
-          title: 'Homepage',
-          tabBarIcon:()=> <Feather name="home" size={24}  />
-          
+          headerShown: false,
+          title: "Homepage",
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "home" : "home-outline"} size={24} />,
         }}
-        
-        
       />
       <Tabs.Screen
-        
         name="search"
         options={{
-          headerShown:false,
-          title: 'Search',
-          tabBarIcon:()=><AntDesign name="search1" size={24} />
-        }}
-      />
-       <Tabs.Screen
-        
-        name="addPost"
-        options={{
-          headerShown:false,
-          title: 'Aggiungi post',
-          tabBarIcon:()=><AntDesign name="plus" size={24}  />
+          headerShown: false,
+          title: "Search",
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "search" : "search-outline"} size={24} />,
         }}
       />
       <Tabs.Screen
-        
-        name="account"
+        name="addPost"
         options={{
-          headerShown:false,
-          title: 'Your account',
-          tabBarIcon:()=><MaterialCommunityIcons name="account" size={24}  />
+          headerShown: false,
+          title: "Aggiungi post",
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "add" : "add-outline"} size={24} />,
         }}
       />
-    
+      <Tabs.Screen
+        name="account"
+        options={{
+          headerShown: false,
 
+          title: "Your account",
+          tabBarIcon: ({ focused }) => <Ionicons name={focused ? "person" : "person-outline"} size={24} />,
+        }}
+      />
     </Tabs>
   );
-} 
+}
